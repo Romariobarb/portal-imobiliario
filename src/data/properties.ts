@@ -1,0 +1,50 @@
+export const properties = [
+  {
+    id: 1,
+    slug: "apartamento-contemporaneo-ibituruna",
+    title: "Apartamento contemporâneo no Ibituruna",
+    price: 1280000,
+    type: "Venda",
+    neighborhood: "Ibituruna",
+    city: "Montes Claros",
+    state: "MG",
+    area: 142,
+    bedrooms: 3,
+    bathrooms: 3,
+    parking: 2,
+    image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea",
+    agent: { name: "Mariana Alves", creci: "CRECI 12345" }
+  },
+  {
+    id: 2,
+    slug: "casa-condominio-montes-claros",
+    title: "Casa moderna em condomínio fechado",
+    price: 1850000,
+    type: "Venda",
+    neighborhood: "Morada do Parque",
+    city: "Montes Claros",
+    state: "MG",
+    area: 280,
+    bedrooms: 4,
+    bathrooms: 4,
+    parking: 3,
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+    agent: { name: "Rodrigo Martins", creci: "CRECI 21845" }
+  },
+  {
+    id: 3,
+    slug: "apartamento-aluguel-centro",
+    title: "Apartamento amplo e bem localizado",
+    price: 3200,
+    type: "Aluguel",
+    neighborhood: "Centro",
+    city: "Montes Claros",
+    state: "MG",
+    area: 110,
+    bedrooms: 3,
+    bathrooms: 2,
+    parking: 2,
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d",
+    agent: { name: "Ana Ribeiro", creci: "CRECI 19482" }
+  }
+];
