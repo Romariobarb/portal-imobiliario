@@ -2,14 +2,16 @@
 @source "../";
 
 :root {
-  --navy-900: #132238;
-  --navy-700: #1d3557;
-  --gold-500: #c89b5a;
-  --background: #f8f8f6;
+  --navy-900: #0E1E3A;
+  --navy-700: #0E1E3A;
+  --gold-500: #C89B5A;
+  --background: #F6F4EF;
   --surface: #ffffff;
-  --text-primary: #171717;
-  --text-secondary: #666666;
-  --border: #e8e8e5;
+  --stone-500: #A7A29A;
+  --graphite-900: #2B2B2B;
+  --text-primary: #2B2B2B;
+  --text-secondary: #57544F;
+  --border: #DCD8D0;
   --success: #287a55;
   --error: #c44545;
 }
@@ -27,3 +29,9 @@ button,input,select,textarea { font: inherit; }
   a { color: inherit; text-decoration: none; }
   :focus-visible { outline: 2px solid var(--gold-500); outline-offset: 4px; }
 }
+
+/* Original supplied artwork, framed with CSS without modifying the image. */
+.astro-logo { mix-blend-mode: lighten; display: block; flex-shrink: 0; width: 150px; height: 100px; background: url('/brand/astro-2026.jpeg') no-repeat; background-size: 253px auto; background-position: -51px -29px; }
+@media (min-width: 640px) { .astro-logo { width: 171px; height: 114px; background-size: 288px auto; background-position: -58px -33px; } }
+
+input::placeholder, textarea::placeholder { color: var(--stone-500); opacity: 1; }

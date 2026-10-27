@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import PropertyCard from "@/components/PropertyCard";
-import { properties } from "@/data/properties";
+import { getPublicProperties } from "@/lib/properties/catalog";
 import {
   ArrowRight,
   Building2,
@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const properties = await getPublicProperties();
   return (
     <>
       <Header />
 
-      <main className="overflow-hidden bg-[#F8F8F6]">
+      <main className="overflow-hidden bg-[#F6F4EF]">
         {/* HERO */}
         <section className="bg-white">
           <div className="mx-auto max-w-[1280px] px-5 pb-12 pt-10 sm:px-8 md:pb-16 md:pt-14">
@@ -26,12 +27,12 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <span className="h-px w-8 bg-[#C89B5A]" />
 
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#A77638]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#805B29]">
                     Curadoria imobiliária
                   </p>
                 </div>
 
-                <h1 className="mt-6 max-w-[540px] text-[clamp(2.5rem,4.5vw,4rem)] font-semibold leading-[1.12] tracking-[-0.045em] text-[#132238]">
+                <h1 className="mt-6 max-w-[540px] text-[clamp(2.5rem,4.5vw,4rem)] font-semibold leading-[1.12] tracking-[-0.045em] text-[#0E1E3A]">
                   O imóvel certo muda mais do que o seu endereço.
                 </h1>
 
@@ -69,11 +70,11 @@ export default function Home() {
 
                   <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 rounded-xl border border-white/20 bg-white/95 p-5 backdrop-blur-sm md:bottom-7 md:left-7 md:right-auto md:max-w-[360px]">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#A77638]">
+                      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#805B29]">
                         Novas oportunidades
                       </p>
 
-                      <p className="mt-2 max-w-[220px] text-lg font-semibold leading-6 text-[#132238]">
+                      <p className="mt-2 max-w-[220px] text-lg font-semibold leading-6 text-[#0E1E3A]">
                         Descubra imóveis que acabaram de chegar.
                       </p>
                     </div>
@@ -81,7 +82,7 @@ export default function Home() {
                     <Link
                       href="/imoveis"
                       aria-label="Ver imóveis"
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#132238] text-white transition hover:bg-[#1D3557]"
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0E1E3A] text-white transition hover:bg-[#0E1E3A]"
                     >
                       <ArrowRight size={18} />
                     </Link>
@@ -93,7 +94,7 @@ export default function Home() {
                     Seleção
                   </p>
 
-                  <p className="mt-1 text-sm font-semibold text-[#132238]">
+                  <p className="mt-1 text-sm font-semibold text-[#0E1E3A]">
                     Imóveis com presença
                   </p>
                 </div>
@@ -104,14 +105,14 @@ export default function Home() {
               <div className="mb-3 flex items-center gap-1 border-b border-[#ECECE8] px-1 pb-3">
                 <Link
                   href="/imoveis?tipo=compra"
-                  className="rounded-lg bg-[#132238] px-5 py-2.5 text-sm font-semibold text-white"
+                  className="rounded-lg bg-[#0E1E3A] px-5 py-2.5 text-sm font-semibold text-white"
                 >
                   Comprar
                 </Link>
 
                 <Link
                   href="/imoveis?tipo=aluguel"
-                  className="rounded-lg px-5 py-2.5 text-sm font-semibold text-[#666] transition hover:bg-[#F5F5F2] hover:text-[#132238]"
+                  className="rounded-lg px-5 py-2.5 text-sm font-semibold text-[#666] transition hover:bg-[#F5F5F2] hover:text-[#0E1E3A]"
                 >
                   Alugar
                 </Link>
@@ -132,14 +133,14 @@ export default function Home() {
                     name="cidade"
                     aria-label="Cidade, bairro ou condomínio"
                     placeholder="Cidade, bairro ou condomínio"
-                    className="h-14 w-full rounded-lg border border-[#E6E6E2] bg-[#FAFAF8] pl-11 pr-4 text-sm text-[#171717] outline-none transition placeholder:text-[#999] focus:border-[#1D3557] focus:bg-white"
+                    className="h-14 w-full rounded-lg border border-[#E6E6E2] bg-[#FAFAF8] pl-11 pr-4 text-sm text-[#2B2B2B] outline-none transition placeholder:text-[#999] focus:border-[#0E1E3A] focus:bg-white"
                   />
                 </div>
 
                 <select
                   name="categoria"
                   aria-label="Tipo de imóvel"
-                  className="h-14 rounded-lg border border-[#E6E6E2] bg-[#FAFAF8] px-4 text-sm text-[#444] outline-none transition focus:border-[#1D3557] focus:bg-white"
+                  className="h-14 rounded-lg border border-[#E6E6E2] bg-[#FAFAF8] px-4 text-sm text-[#444] outline-none transition focus:border-[#0E1E3A] focus:bg-white"
                 >
                   <option value="">Tipo de imóvel</option>
                   <option value="apartamento">Apartamento</option>
@@ -149,7 +150,7 @@ export default function Home() {
 
                 <button
                   type="submit"
-                  className="flex h-14 items-center justify-center gap-2 rounded-lg bg-[#1D3557] px-7 text-sm font-semibold text-white transition hover:bg-[#132238]"
+                  className="flex h-14 items-center justify-center gap-2 rounded-lg bg-[#0E1E3A] px-7 text-sm font-semibold text-white transition hover:bg-[#0E1E3A]"
                 >
                   <Search size={18} />
                   Buscar
@@ -163,8 +164,8 @@ export default function Home() {
         <section className="border-y border-[#E5E5E1] bg-[#F4F2ED]">
           <div className="mx-auto grid max-w-[1280px] gap-0 divide-y divide-[#DDDAD2] px-5 sm:px-8 md:grid-cols-3 md:divide-x md:divide-y-0">
             <div className="py-7 md:pr-8 lg:py-9">
-              <span className="mb-4 block text-xs font-medium tracking-[0.2em] text-[#A77638]">01 / HABITARE</span>
-              <h2 className="text-2xl font-semibold tracking-tight text-[#132238]">
+              <span className="mb-4 block text-xs font-medium tracking-[0.2em] text-[#805B29]">01 / ASTRO</span>
+              <h2 className="text-2xl font-semibold tracking-tight text-[#0E1E3A]">
                 Seleção
               </h2>
               <p className="mt-3 max-w-xs text-sm leading-7 text-[#666]">
@@ -173,8 +174,8 @@ export default function Home() {
             </div>
 
             <div className="py-7 md:px-8 lg:py-9">
-              <span className="mb-4 block text-xs font-medium tracking-[0.2em] text-[#A77638]">02 / HABITARE</span>
-              <h2 className="text-2xl font-semibold tracking-tight text-[#132238]">
+              <span className="mb-4 block text-xs font-medium tracking-[0.2em] text-[#805B29]">02 / ASTRO</span>
+              <h2 className="text-2xl font-semibold tracking-tight text-[#0E1E3A]">
                 Conexão
               </h2>
               <p className="mt-3 max-w-xs text-sm leading-7 text-[#666]">
@@ -183,8 +184,8 @@ export default function Home() {
             </div>
 
             <div className="py-7 md:pl-8 lg:py-9">
-              <span className="mb-4 block text-xs font-medium tracking-[0.2em] text-[#A77638]">03 / HABITARE</span>
-              <h2 className="text-2xl font-semibold tracking-tight text-[#132238]">
+              <span className="mb-4 block text-xs font-medium tracking-[0.2em] text-[#805B29]">03 / ASTRO</span>
+              <h2 className="text-2xl font-semibold tracking-tight text-[#0E1E3A]">
                 Experiência
               </h2>
               <p className="mt-3 max-w-xs text-sm leading-7 text-[#666]">
@@ -201,12 +202,12 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <Sparkles size={16} className="text-[#C89B5A]" />
 
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#A77638]">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#805B29]">
                   Seleção em destaque
                 </p>
               </div>
 
-              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em] text-[#132238] md:text-4xl">
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em] text-[#0E1E3A] md:text-4xl">
                 Imóveis que merecem sua atenção.
               </h2>
 
@@ -218,7 +219,7 @@ export default function Home() {
 
             <Link
               href="/imoveis"
-              className="group flex items-center gap-2 text-sm font-semibold text-[#1D3557]"
+              className="group flex items-center gap-2 text-sm font-semibold text-[#0E1E3A]"
             >
               Ver todos os imóveis
               <ArrowRight
@@ -229,6 +230,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {properties.length === 0 && <p className="col-span-full rounded-xl border border-[#DCD8D0] bg-white p-8 text-[#57544F]">Novos imóveis estarão disponíveis após a análise dos anúncios.</p>}
             {properties.slice(0, 3).map((property) => (
               <PropertyCard key={property.id} property={property} />
             ))}
@@ -237,10 +239,10 @@ export default function Home() {
 
         {/* MANIFESTO / CTA */}
         <section className="px-5 pb-16 sm:px-8 md:pb-24">
-          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-xl bg-[#132238]">
+          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-xl bg-[#0E1E3A]">
             <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
               <div className="px-7 py-12 md:px-12 md:py-16 lg:px-16">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D9B77A]">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C89B5A]">
                   Uma nova experiência imobiliária
                 </p>
 
@@ -255,7 +257,7 @@ export default function Home() {
 
                 <Link
                   href="/imoveis"
-                  className="mt-9 inline-flex items-center gap-3 rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-[#132238] transition hover:bg-[#F1EEE8]"
+                  className="mt-9 inline-flex items-center gap-3 rounded-lg bg-white px-6 py-3.5 text-sm font-semibold text-[#0E1E3A] transition hover:bg-[#F6F4EF]"
                 >
                   Explorar imóveis
                   <ArrowRight size={17} />
@@ -271,7 +273,7 @@ export default function Home() {
                   className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-r from-[#132238]/50 to-transparent lg:from-[#132238]/20" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0E1E3A]/50 to-transparent lg:from-[#0E1E3A]/20" />
               </div>
             </div>
           </div>

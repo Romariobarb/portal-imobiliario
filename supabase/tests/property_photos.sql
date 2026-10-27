@@ -1,0 +1,35 @@
+begin;
+create temporary table photo_fixture(key text primary key,id uuid);
+grant all on photo_fixture to authenticated,anon;
+insert into photo_fixture values ('owner',gen_random_uuid()),('other',gen_random_uuid()),('file',gen_random_uuid());
+insert into auth.users(id,raw_user_meta_data) select id,jsonb_build_object('registration_kind','broker','full_name','Teste de fotos','phone','11999999999','creci','PHOTO-'||left(id::text,18),'city','São Paulo','state','SP') from photo_fixture where key in ('owner','other');
+insert into public.creci_checks(broker_id,actor_id,creci,full_name,registration_state,result,notes) select b.id,b.profile_id,b.creci,p.full_name,'SP','confirmed','Conferência fictícia para teste de fotos' from public.brokers b join public.profiles p on p.id=b.profile_id where b.profile_id=(select id from photo_fixture where key='owner');
+update public.brokers set status='approved' where profile_id=(select id from photo_fixture where key='owner');
+select set_config('request.jwt.claim.sub',(select id::text from photo_fixture where key='owner'),true);
+set local role authenticated;
+insert into storage.objects(bucket_id,name) values ('property-photos',(select id::text from photo_fixture where key='owner')||'/'||(select id::text from photo_fixture where key='file')||'.jpg');
+do $$ begin
+ if (select count(*) from storage.objects where bucket_id='property-photos') <> 1 then raise exception 'Owner cannot read own upload'; end if;
+end $$;
+insert into photo_fixture values ('listing',public.save_listing(jsonb_build_object('operation_type','sale','property_type','Casa','title','Teste de foto','description','Descrição de teste transacional','price',100000,'city','São Paulo','state','SP','neighborhood','Centro','area',50,'bedrooms',2,'suites',1,'bathrooms',1,'parking_spaces',1,'features','[]'::jsonb,'images',jsonb_build_array('https://jnutgaczakhewkkhqawx.supabase.co/storage/v1/object/authenticated/property-photos/'||(select id::text from photo_fixture where key='owner')||'/'||(select id::text from photo_fixture where key='file')||'.jpg')),null,true,null));
+select set_config('request.jwt.claim.sub',(select id::text from photo_fixture where key='other'),true);
+do $$ declare blocked boolean:=false; begin
+ if exists(select 1 from storage.objects where bucket_id='property-photos') then raise exception 'Other broker can read private photo'; end if;
+ begin insert into storage.objects(bucket_id,name) values ('property-photos',(select id::text from photo_fixture where key='other')||'/pending.jpg'); exception when insufficient_privilege then blocked:=true; end;
+ if not blocked then raise exception 'Pending broker can upload'; end if;
+end $$;
+reset role;
+select set_config('request.jwt.claim.sub','',true);
+set local role anon;
+do $$ begin if exists(select 1 from storage.objects where bucket_id='property-photos') then raise exception 'Anonymous can read pending photo'; end if; end $$;
+reset role;
+update public.properties set status='approved' where id=(select id from photo_fixture where key='listing');
+set local role anon;
+do $$ begin if (select count(*) from storage.objects where bucket_id='property-photos') <> 1 then raise exception 'Published photo is unavailable'; end if; end $$;
+reset role;
+update public.brokers set status='suspended' where profile_id=(select id from photo_fixture where key='owner');
+set local role anon;
+do $$ begin if exists(select 1 from storage.objects where bucket_id='property-photos') then raise exception 'Suspended broker photo remains public'; end if; end $$;
+reset role;
+select 'PASS: upload ownership, pending denial, private photos, publication and suspension' as result;
+rollback;
